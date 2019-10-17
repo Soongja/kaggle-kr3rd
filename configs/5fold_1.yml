@@ -1,0 +1,50 @@
+# ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2',
+# 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50',
+# 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13',
+# 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetamobile', 'nasnetalarge', 'dpn68', 'dpn68b', 'dpn92',
+# 'dpn98', 'dpn131', 'dpn107', 'xception', 'senet154', 'se_resnet50', 'se_resnet101', 'se_resnet152',
+# 'se_resnext50_32x4d', 'se_resnext101_32x4d', 'cafferesnet101', 'pnasnet5large', 'polynet']
+
+TRAIN_DIR: '_results/se_resnext101_32x4d_320_592_croponly_weakaug_ensemble_pseudo0.50_Tmax15_5fold_1'
+
+DATA_DIR: 'data/crop'
+CSV: 'data/stratified/ensemble_pseudo0.50+5fold_1.csv'
+
+PARALLEL: True
+NUM_WORKERS: 8
+DEBUG: False
+MIXUP: False
+
+DATA:
+  NAME: 'CarDataset'
+  IMG_H: 320
+  IMG_W: 592
+
+MODEL:
+  NAME: 'se_resnext101_32x4d'
+  ADD_FC: False
+
+TRAIN:
+  BATCH_SIZE: 64
+  NUM_EPOCHS: 18
+
+EVAL:
+  BATCH_SIZE: 256
+
+LOSS:
+  NAME: 'binary_focal_loss'
+
+OPTIMIZER:
+  NAME: 'adam'
+  LR: 0.001
+  PARAMS:
+    weight_decay: 0
+
+SCHEDULER:
+  NAME: 'cosine'
+  PARAMS:
+#    milestones: [4, 14]
+#    gamma: 0.1
+
+    T_max: 15
+    eta_min: 0.000005
